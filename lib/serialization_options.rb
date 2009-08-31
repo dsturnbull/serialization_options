@@ -38,6 +38,7 @@ class ActiveRecord::Serialization::Serializer
     options ||= {}.with_indifferent_access
     options[:methods] = [options[:methods]].flatten
     options[:methods] << :errors
+    options[:methods].reject!(&:nil?)
 
     initialize_without_serialization_options(record, options)
   end
