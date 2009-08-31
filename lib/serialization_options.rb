@@ -34,7 +34,12 @@ class ActiveRecord::Serialization::Serializer
   # Add serialization options defined in the class of the record
   def initialize_with_serialization_options(record, options = {})
     options = record.serialization_options if record.respond_to? :serialization_options
-    initialize_without_serialization_options(record, options || {}.with_indifferent_access)
+
+    options ||= {}.with_indifferent_access
+    options[:methods] = [options[:methods]].flatten
+    options[:methods] << :errors
+
+    initialize_without_serialization_options(record, options)
   end
 
   alias_method_chain :serializable_record, :silencer
